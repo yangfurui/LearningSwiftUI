@@ -10,3 +10,7 @@ WeSplit，根据消费金额和应付小费，计算账单应付款项和 AA 制
 - `Section`
 - `TextField`
 - `Picker`
+
+### 演示
+
+![WeSplit](./Resources/WeSplit.gif)
