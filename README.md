@@ -67,3 +67,17 @@ WeSplit，根据消费金额和应付小费，计算账单应付款项和 AA 制
 ### 项目演示
 
 ![BetterRest演示](./Resources/BetterRest演示.gif)
+
+## Word Scramble
+
+从导入的文件 `start.txt` 中，随机取出一串字符串，然后从给出的字符串中取出字符拼成一个单词，如果拼写正确则可得到一分，拼写错误或者重复拼写会有错误提示。
+
+你会学习到：
+
+- `List`
+- `Bundle`
+- `UITextChecker`
+
+### 项目演示
+
+![WordScramble演示](./Resources/WordScramble演示.gif)
