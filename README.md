@@ -1,3 +1,5 @@
+[toc]
+
 # LearningSwiftUI
 
 [100 Days of SwiftUI](https://www.hackingwithswift.com/100/swiftui) 的全部项目。
@@ -68,7 +70,7 @@ WeSplit，根据消费金额和应付小费，计算账单应付款项和 AA 制
 
 ![BetterRest演示](./Resources/BetterRest演示.gif)
 
-## Word Scramble
+## 5. Word Scramble
 
 从导入的文件 `start.txt` 中，随机取出一串字符串，然后从给出的字符串中取出字符拼成一个单词，如果拼写正确则可得到一分，拼写错误或者重复拼写会有错误提示。
 
@@ -81,3 +83,171 @@ WeSplit，根据消费金额和应付小费，计算账单应付款项和 AA 制
 ### 项目演示
 
 ![WordScramble演示](./Resources/WordScramble演示.gif)
+
+## 6. Animations
+
+### 水波纹动画
+
+```swift
+struct ContentView: View {
+    
+    @State private var animationAmount = 1.0
+    
+    var body: some View {
+        Button("Tap me") {
+        }
+        .padding(50)
+        .background(.red)
+        .foregroundColor(.white)
+        .clipShape(Circle())
+        .overlay(
+            Circle()
+                .stroke(.red)
+                .scaleEffect(animationAmount)
+                .opacity(2 - animationAmount)
+                .animation(
+                    .easeInOut(duration: 1.0)
+                        .repeatForever(autoreverses: false),
+                    value: animationAmount
+                )
+        )
+        .onAppear {
+            animationAmount = 2
+        }
+    }
+}
+```
+
+效果：
+
+![Animations_波纹按钮](./Resources/Animations_波纹按钮.gif)
+
+### 翻转动画
+
+```swift
+struct ContentView: View {
+    @State private var animationAmount = 0.0
+    
+    var body: some View {
+        Button("Tap me") {
+            withAnimation(.interpolatingSpring(stiffness: 5, damping: 1)) {
+                animationAmount += 360
+            }
+        }
+        .padding(50)
+        .background(.red)
+        .foregroundColor(.white)
+        .clipShape(Circle())
+        .rotation3DEffect(.degrees(animationAmount), axis: (x: 0, y: 1, z: 0))
+    }
+}
+```
+
+效果：
+
+![Animations_显式动画](./Resources/Animations_显式动画.gif)
+
+### 蛇动画
+
+```swift
+struct ContentView: View {
+    let letters = Array("Hello, SwiftUI")
+    @State private var enabled = false
+    @State private var dragAmount = CGSize.zero
+    
+    var body: some View {
+        HStack(spacing: 0) {
+            ForEach(0..<letters.count) { num in
+                Text(String(letters[num]))
+                    .padding(5)
+                    .font(.title)
+                    .background(enabled ? .blue : .red)
+                    .offset(dragAmount)
+                    .animation(
+                        .default.delay(Double(num) / 20),
+                        value: dragAmount
+                    )
+            }
+        }
+        .gesture(
+            DragGesture()
+                .onChanged { dragAmount = $0.translation }
+                .onEnded({ _ in
+                    dragAmount = .zero
+                    enabled.toggle()
+                })
+        )
+    }
+}
+```
+
+效果：
+
+![snake](./Resources/snake.gif)
+
+### 自定义过渡动画
+
+```swift
+struct CornerRotateModifier: ViewModifier {
+    let amount: Double
+    let anchor: UnitPoint
+    
+    func body(content: Content) -> some View {
+        content
+            .rotationEffect(.degrees(amount), anchor: anchor)
+            .clipped()
+    }
+}
+
+extension AnyTransition {
+    static var pivot: AnyTransition {
+        .modifier(active: CornerRotateModifier(amount: -90, anchor: .topLeading),
+                  identity: CornerRotateModifier(amount: 0, anchor: .topLeading))
+    }
+}
+
+struct ContentView: View {
+    @State private var isShowingRed = false
+    
+    var body: some View {
+        ZStack {
+            Rectangle()
+                .fill(.blue)
+                .frame(width: 200, height: 200)
+            
+            
+            if isShowingRed {
+                Rectangle()
+                    .fill(.red)
+                    .frame(width: 200, height: 200)
+                    .transition(.pivot)
+            }
+        }
+        .onTapGesture {
+            withAnimation {
+                isShowingRed.toggle()
+            }
+        }
+    }
+}
+```
+
+效果：
+
+![custom_transitions](./Resources/custom_transitions.gif)
+
+## 阶段性回顾
+
+目前掌握的技能：
+
+- 如何使用 `Stepper` 读取用户的数字
+- 使用 `DatePicker` 让用户输入日期，包括使用 `displayedComponents` 参数来控制日期或时间
+- 使用 `Date`、`DateComponents` 和 `DateFormatter` 来处理日期
+- 如何引入机器学习以充分利用现代 iOS 设备的全部功能
+- 使用 `List` 构建滚动数据表
+- 使用 `onAppear()` 在显示视图时运行代码
+- 使用 `Bunlde` 类查找路径从应用程序中读取文件，包括从那里加载字符串
+- 使用 `fatalError()` 使代码崩溃，以及为什么这实际上可能是一件好事
+- 如何使用 `UITextChecker` 检查字符串是否拼写正确
+- 使用 `animation()` 修饰符创建隐式动画
+- 自定义具有延迟和重复的动画，以及在缓入缓出与弹簧动画之间进行选择
