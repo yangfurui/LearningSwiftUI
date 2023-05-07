@@ -251,3 +251,23 @@ struct ContentView: View {
 - 如何使用 `UITextChecker` 检查字符串是否拼写正确
 - 使用 `animation()` 修饰符创建隐式动画
 - 自定义具有延迟和重复的动画，以及在缓入缓出与弹簧动画之间进行选择
+
+## 7. iExpense
+
+一个记账的小软件，通过 `UserDefault` 存储相关数据。
+
+你会学习到：
+
+- `UserDefaults`
+- `AppStorage`
+- `@StateObject`
+- `sheet()`
+- `onDelete()`
+- `@Published`
+- `Codable`
+- `@ObservedObject`
+
+效果：
+
+![iExpense](./Resources/iExpense.gif)
+
